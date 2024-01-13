@@ -6,14 +6,14 @@ import "./SearchBox.css";
 export default function SearchBox({ updateInfo }) {
   let [city, setCity] = useState("");
   let [error, setError] = useState(false);
-  const API_URL = "https://api.openweathermap.org/data/2.5/weather";
-  const API_KEY = "ae0d1ba17d384132221b9fca4e605e07";
 
+  const API_URL = import.meta.env.VITE_API_URL;
+  const API_KEY = import.meta.env.VITE_API_KEY;
+  
   let getWeatherInfo = async () => {
     try {
       let response = await fetch(
-        `${API_URL}?q=${city}&appid=${API_KEY}&units=imperial`
-      );
+        `${API_URL}?q=${city}&appid=${API_KEY}&units=imperial`);
       let jsonResponse = await response.json();
       let result = {
         city: city,
@@ -39,9 +39,8 @@ export default function SearchBox({ updateInfo }) {
     event.preventDefault();
 
     try {
-      event.preventDefault();
-      console.log(city);
       setCity("");
+      setError(false);
       let newInfo = await getWeatherInfo();
       updateInfo(newInfo);
     } catch (err) {
